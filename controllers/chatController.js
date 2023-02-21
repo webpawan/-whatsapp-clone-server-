@@ -121,5 +121,36 @@ export const renameGroup = asyncHandler(async (req, res) => {
 export const addGroup = asyncHandler(async (req, res) => {
   const { chatId, userId } = req.body;
 
-  const added = Chat.findByIdAndUpdate(chatId, { $push: { users: userId } },{new:true});
+  const added =await Chat.findByIdAndUpdate(
+    chatId,
+    { $push: { users: userId } },
+    { new: true }
+  )
+    .populate("users", "-password")
+    .populate("groupAdmin", "-password");
+
+      if (!added) {
+        res.status(400).send("user added problem");
+      } else {
+        res.json(added);
+      }
+
+});
+
+export const removeGroup = asyncHandler(async (req, res) => {
+  const { chatId, userId } = req.body;
+
+  const remove =await Chat.findByIdAndUpdate(
+    chatId,
+    { $pull: { users: userId } },
+    { new: true }
+  )
+    .populate("users", "-password")
+    .populate("groupAdmin", "-password");
+
+  if (!remove) {
+    res.status(400).send("user remove problem");
+  } else {
+    res.json(remove);
+  }
 });
