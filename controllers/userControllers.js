@@ -22,7 +22,13 @@ export const registerUser = async (req, res) => {
 
     if (newUser) {
       const token = await newUser.genrateToken();
-      res.status(200).json(newUser, token);
+
+      res.cookie("jwt", token, {
+        expires: new Date(Date.now() + 5000000),
+        httpOnly: true,
+      });
+      await newUser.save();
+      res.status(200).json(newUser);
     } else {
       res.status(400);
       throw new Error("Failed to singin user");
@@ -35,7 +41,6 @@ export const registerUser = async (req, res) => {
 export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
-
     if (!email && !password) {
       return res.status(404).json("email and password are invalid");
     }
@@ -44,7 +49,10 @@ export const login = async (req, res) => {
     if (loginUser) {
       const isMatch = await bcryptjs.compare(password, loginUser.password);
       const token = await loginUser.genrateToken();
-
+      res.cookie("jwt", token, {
+        expires: new Date(Date.now() + 5000000),
+        httpOnly: true,
+      });
       if (!isMatch) {
         return res.status(404).json("invalid user crenditials");
       } else {
@@ -58,3 +66,31 @@ export const login = async (req, res) => {
     res.status(404).json("login catch error");
   }
 };
+
+// isma data ko send karnega query ke rup me
+// like-> /api/user?search=pawan
+// id ka liya param likhte ha query ke  liya query lkhte ha /
+// api post man me url -> http://localhost:5000/api/user?search=pawan&lastname=saini
+// yadi log ker req.query ko to nich outlikha ha bo miliga
+//output -> { search: 'pawan', lastname: 'saini' }
+// const keyword = req.query.search;
+// iska output me kable kabple pawan syga kyuki ya kable search tak ki value la raha ha & ke value ni lega
+
+export const allUsers = asyncHandler(async (req, res, next) => {
+ 
+  const keyword = req.query.search
+    ? {
+        // https://www.mongodb.com/docs/manual/reference/operator/query/regex/
+        $or: [
+          { name: { $regex: req.query.search, $options: "i" } },
+          { email: { $regex: req.query.search, $options: "i" } },
+        ],
+      }
+    : {};
+  // simple if eles condition ne else condtion me kuch ni ha keyword veriable ke andar search search hoge
+
+  const users = await User.find(keyword).find({_id:{$ne:req.user._id}})
+  res.send(users);
+  // jo user login kiya ha usko chorke sab user ko search karna ha bo findme likha ha ya $ne operator na
+  // res.send()
+});
