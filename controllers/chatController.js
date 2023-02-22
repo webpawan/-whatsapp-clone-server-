@@ -27,8 +27,8 @@ export const accessChat = asyncHandler(async (req, res) => {
     select: "name pic email",
   });
 
-  if (isChat > 0) {
-    res.send([0]);
+  if (isChat.length > 0) {
+    res.send(isChat[0]);
   } else {
     var chatData = {
       chatName: "sender",
@@ -52,14 +52,15 @@ export const accessChat = asyncHandler(async (req, res) => {
 
 export const fetchChats = asyncHandler(async (req, res) => {
   try {
+
     Chat.find({ users: { $elemMatch: { $eq: req.user._id } } })
       .populate("users", "-password")
       .populate("groupAdmin", "-password")
       .populate("latestMessage")
       .sort({ updatedAt: -1 })
       .then(async (result) => {
-        result = await User.populate(result, {
-          path: "latestMessage",
+        result = await User.populate(result,{
+          path: "latestMessage.sender",
           select: "name pic email",
         });
         res.status(200).send(result);
@@ -121,7 +122,7 @@ export const renameGroup = asyncHandler(async (req, res) => {
 export const addGroup = asyncHandler(async (req, res) => {
   const { chatId, userId } = req.body;
 
-  const added =await Chat.findByIdAndUpdate(
+  const added = await Chat.findByIdAndUpdate(
     chatId,
     { $push: { users: userId } },
     { new: true }
@@ -129,18 +130,17 @@ export const addGroup = asyncHandler(async (req, res) => {
     .populate("users", "-password")
     .populate("groupAdmin", "-password");
 
-      if (!added) {
-        res.status(400).send("user added problem");
-      } else {
-        res.json(added);
-      }
-
+  if (!added) {
+    res.status(400).send("user added problem");
+  } else {
+    res.json(added);
+  }
 });
 
 export const removeGroup = asyncHandler(async (req, res) => {
   const { chatId, userId } = req.body;
 
-  const remove =await Chat.findByIdAndUpdate(
+  const remove = await Chat.findByIdAndUpdate(
     chatId,
     { $pull: { users: userId } },
     { new: true }

@@ -6,12 +6,14 @@ const app = express();
 import "./db/connection.js";
 import userRouter from "./Routes/userRoutes.js";
 import chatRouter from "./Routes/chatRoutes.js";
+import messageRoute from "./Routes/messateRoutes.js";
 import cookieParser from "cookie-parser";
 
 app.use(express.json());
 app.use(cookieParser())
 app.use("/api/user", userRouter);
 app.use('/api/chat',chatRouter);
+app.use("/api/message",messageRoute)
 // ----------------------------------------------
 // yadi usko koi route ni milti ha to bo in niche bali rout me jayga firstbali ma bhi error ke response ni mila to second bale ko dhkega
 // isko bad me dhkte ha 
