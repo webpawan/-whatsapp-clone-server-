@@ -9,6 +9,10 @@ import chatRouter from "./Routes/chatRoutes.js";
 import messageRoute from "./Routes/messateRoutes.js";
 import cookieParser from "cookie-parser";
 
+app.get("/",(req,res)=>{
+  res.json("successfull api working")
+})
+
 app.use(express.json());
 app.use(cookieParser())
 app.use("/api/user", userRouter);
