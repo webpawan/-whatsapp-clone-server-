@@ -12,13 +12,16 @@ export const accessChat = asyncHandler(async (req, res) => {
     return res.sendStatus(400);
   }
 
-  var isChat = await Chat.findOne({
+
+
+  var isChat = await Chat.find({
     isGroupChat: false,
     $and: [
       { users: { $elemMatch: { $eq: req.user._id } } },
       { users: { $elemMatch: { $eq: userId } } },
     ],
   })
+  
     .populate("users", "-password")
     .populate("latestMessage");
 
@@ -26,7 +29,7 @@ export const accessChat = asyncHandler(async (req, res) => {
     path: "latestMessage.sender",
     select: "name pic email",
   });
-
+// --------------------------------
   if (isChat.length > 0) {
     res.send(isChat[0]);
   } else {
@@ -35,7 +38,7 @@ export const accessChat = asyncHandler(async (req, res) => {
       isGroupChat: false,
       users: [req.user._id, userId],
     };
-
+// ===============================================================================================
     try {
       const createdChat = await Chat.create(chatData);
       const fullchat = await Chat.findOne({ _id: createdChat._id }).populate(

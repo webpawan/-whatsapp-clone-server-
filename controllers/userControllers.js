@@ -48,15 +48,18 @@ export const login = async (req, res) => {
     const loginUser = await User.findOne({ email: email });
     if (loginUser) {
       const isMatch = await bcryptjs.compare(password, loginUser.password);
-      const token = await loginUser.genrateToken();
-      res.cookie("jwt", token, {
-        expires: new Date(Date.now() + 5000000),
-        httpOnly: true,
-      });
-      if (!isMatch) {
-        return res.status(404).json("invalid user crenditials");
+     
+      if (isMatch) {
+         const token = await loginUser.genrateToken();
+         res.cookie("jwt", token, {
+           expires: new Date(Date.now() + 5000000),
+           httpOnly: true,
+         });
+        return res.status(200).json(loginUser);
+
       } else {
-        return res.status(400).json("login successfull");
+        return res.status(404).json("invalid user crenditials");
+
       }
     } else {
       res.status(404).json("some problem in login api");
