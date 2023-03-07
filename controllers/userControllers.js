@@ -24,7 +24,7 @@ export const registerUser = async (req, res) => {
       const token = await newUser.genrateToken();
 
       res.cookie("jwt", token, {
-        expires: new Date(Date.now() + 5000000),
+      
         httpOnly: true,
       });
       await newUser.save();
@@ -52,7 +52,6 @@ export const login = async (req, res) => {
       if (isMatch) {
          const token = await loginUser.genrateToken();
          res.cookie("jwt", token, {
-           expires: new Date(Date.now() + 5000000),
            httpOnly: true,
          });
         return res.status(200).json(loginUser);
