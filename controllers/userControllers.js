@@ -69,30 +69,22 @@ export const login = async (req, res) => {
   }
 };
 
-// isma data ko send karnega query ke rup me
-// like-> /api/user?search=pawan
-// id ka liya param likhte ha query ke  liya query lkhte ha /
-// api post man me url -> http://localhost:5000/api/user?search=pawan&lastname=saini
-// yadi log ker req.query ko to nich outlikha ha bo miliga
-//output -> { search: 'pawan', lastname: 'saini' }
-// const keyword = req.query.search;
-// iska output me kable kabple pawan syga kyuki ya kable search tak ki value la raha ha & ke value ni lega
+
 
 export const allUsers = asyncHandler(async (req, res, next) => {
  
   const keyword = req.query.search
     ? {
-        // https://www.mongodb.com/docs/manual/reference/operator/query/regex/
+       
         $or: [
           { name: { $regex: req.query.search, $options: "i" } },
           { email: { $regex: req.query.search, $options: "i" } },
         ],
       }
     : {};
-  // simple if eles condition ne else condtion me kuch ni ha keyword veriable ke andar search search hoge
+
 
   const users = await User.find(keyword).find({_id:{$ne:req.user._id}})
   res.send(users);
-  // jo user login kiya ha usko chorke sab user ko search karna ha bo findme likha ha ya $ne operator na
-  // res.send()
+  
 });
