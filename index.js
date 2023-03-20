@@ -17,7 +17,7 @@ const httpServer = createServer(app);
 const io = new Server(httpServer, {
   pingTimeout: 60000,
   cors: {
-    origin: "*",
+    origin:["*", "https://main--chatappclone01.netlify.app"],
   },
 });
 app.use(express.json());
