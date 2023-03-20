@@ -22,7 +22,7 @@ const io = new Server(httpServer, {
 });
 app.use(express.json());
 app.use(cookieParser());
-app.use("/api/user", userRouter);
+app.use("https://main--chatappclone01.netlify.app/api/user", userRouter);
 app.use("/api/chat", chatRouter);
 app.use("/api/message", messageRoute);
 
