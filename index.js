@@ -17,7 +17,7 @@ const httpServer = createServer(app);
 const io = new Server(httpServer, {
   pingTimeout: 60000,
   cors: {
-    origin: ["*", "http://chatappclone01.onrender.com"],
+    origin: "http://chatApp.onrender.com",
   },
 });
 app.use(express.json());
