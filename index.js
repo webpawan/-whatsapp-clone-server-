@@ -10,14 +10,13 @@ import userRouter from "./Routes/userRoutes.js";
 import chatRouter from "./Routes/chatRoutes.js";
 import messageRoute from "./Routes/messateRoutes.js";
 import cookieParser from "cookie-parser";
-import path from "path";
 
 
 const httpServer = createServer(app);
 const io = new Server(httpServer, {
   pingTimeout: 60000,
   cors: {
-    origin:["*", "https://main--chatappclone01.netlify.app"],
+    origin: "https://chatapp-wh3b.onrender.com",
   },
 });
 app.use(express.json());
