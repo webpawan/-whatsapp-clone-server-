@@ -2,7 +2,7 @@ import Chat from "../models/chatModels.js";
 import User from "../models/userModels.js";
 import asyncHandler from "express-async-handler";
 
-// asyncHandler is prakar sa work karta ha try catch ni likhna padega or youtube per bhe search lo
+
 
 export const accessChat = asyncHandler(async (req, res) => {
   const { userId } = req.body;

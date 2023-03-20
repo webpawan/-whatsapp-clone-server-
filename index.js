@@ -10,12 +10,14 @@ import userRouter from "./Routes/userRoutes.js";
 import chatRouter from "./Routes/chatRoutes.js";
 import messageRoute from "./Routes/messateRoutes.js";
 import cookieParser from "cookie-parser";
+import path from "path";
+
 
 const httpServer = createServer(app);
 const io = new Server(httpServer, {
   pingTimeout: 60000,
   cors: {
-    origin: "*",
+    origin: ["*", "http://chatappclone01.onrender.com"],
   },
 });
 app.use(express.json());
@@ -23,6 +25,7 @@ app.use(cookieParser());
 app.use("/api/user", userRouter);
 app.use("/api/chat", chatRouter);
 app.use("/api/message", messageRoute);
+
 
 io.on("connection", (socket) => {
   console.log("A user has connected");
