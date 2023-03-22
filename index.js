@@ -2,8 +2,8 @@ import express from "express";
 import dotenv from "dotenv";
 dotenv.config();
 const PORT = process.env.PORT || 3000;
-import { createServer } from "http";
-import { Server } from "socket.io";
+// import { createServer } from "http";
+// import { Server } from "socket.io";
 const app = express();
 import "./db/connection.js";
 import userRouter from "./Routes/userRoutes.js";
@@ -13,7 +13,10 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 app.use(
   cors({
-    origin: ["http://localhost:5173", "https://chatAppServer.onrender.com"],
+    origin: [
+      "http://localhost:5173",
+      "https://whatsappclone-epid.onrender.com",
+    ],
   })
 );
 
