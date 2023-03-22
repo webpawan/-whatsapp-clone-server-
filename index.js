@@ -1,4 +1,4 @@
-import express, { json } from "express";
+import express from "express";
 import dotenv from "dotenv";
 dotenv.config();
 const PORT = process.env.PORT || 3000;
@@ -16,7 +16,7 @@ const httpServer = createServer(app);
 const io = new Server(httpServer, {
   pingTimeout: 60000,
   cors: {
-    origin: "https://chatapp-wh3b.onrender.com",
+    origin: process.env.BASE_URL,
   },
 });
 app.use(express.json());
@@ -38,7 +38,7 @@ io.on("connection", (socket) => {
 
   socket.on("join chat", (room) => {
     socket.join(room);
-    console.log("uiser joined room" + room);
+    console.log("user joined room" + room);
   });
 
   socket.on("typing", (room) => socket.in(room).emit("typing"));
