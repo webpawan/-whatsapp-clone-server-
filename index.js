@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 dotenv.config();
 const PORT = process.env.PORT || 3000;
 import { createServer } from "http";
-import { Server } from "socket.io";
+// import { Server } from "socket.io";
 const app = express();
 import "./db/connection.js";
 import userRouter from "./Routes/userRoutes.js";
@@ -17,6 +17,8 @@ app.use(
   })
 );
 
+// chatAppServer-api.onrender.com
+
 // const httpServer = createServer(app);
 // const io = new Server(httpServer, {
 //   pingTimeout: 60000,
@@ -25,7 +27,7 @@ app.use(
 //   },
 // });
 
-app.use(express.json());
+https: app.use(express.json());
 app.use(cookieParser());
 app.use("/api/user", userRouter);
 app.use("/api/chat", chatRouter);
@@ -76,5 +78,5 @@ app.use("/api/message", messageRoute);
 
 
 app.listen(PORT, () => {
-  console.log("start server");
+  console.log(`start server ${PORT}`);
 });
