@@ -13,7 +13,7 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 app.use(
   cors({
-    origin: ["http://localhost:3000", "http://chatAppServer.onrender.com"],
+    origin: ["http://localhost:3000", "https://chatAppServer.onrender.com"],
   })
 );
 
