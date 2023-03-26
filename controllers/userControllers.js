@@ -24,8 +24,8 @@ export const registerUser = async (req, res) => {
       const token = await newUser.genrateToken();
 
       res.cookie("jwt", token, {
-      
         httpOnly: true,
+        secure: true,
       });
       await newUser.save();
       res.status(200).json(newUser);
