@@ -5,7 +5,7 @@ import { verifyToken } from "../middlewares/verifyTokenMiddleware.js";
 const router = express.Router();
 
 router.post("/",verifyToken,accessChat);
-router.get("/", verifyToken,fetchChats);
+router.get("/",fetchChats);
 router.post("/group", verifyToken,createGroupChat);
 router.put("/rename", verifyToken,renameGroup);
 router.put("/groupadd", verifyToken,addGroup);
