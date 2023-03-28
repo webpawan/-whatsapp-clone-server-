@@ -18,20 +18,12 @@ const httpServer = createServer(app);
 const io = new Server(httpServer, {
   pingTimeout: 60000,
   cors: {
-    origin: [
-      "https://cline-side-chat-app.onrender.com",
-      "Access-Control-Allow-Origin",
-    ],
+    origin: 
+      "*",    
   },
 });
 
-app.use((req, res, next) => {
-  res.setHeader(
-    `Access-Control-Allow-Origin: https://main--chatappclone01.netlify.app`,
-  
-  );
-  next();
-});
+
 
 
 app.use(express.json());
