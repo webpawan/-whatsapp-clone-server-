@@ -10,8 +10,8 @@ import userRouter from "./Routes/userRoutes.js";
 import chatRouter from "./Routes/chatRoutes.js";
 import messageRoute from "./Routes/messateRoutes.js";
 import cookieParser from "cookie-parser";
-import cors from "cors";
-app.use(cors());
+
+app.use(cookieParser());
 
 // chatAppServer-api.onrender.com
 
@@ -30,7 +30,6 @@ app.use((req, res, next) => {
 
 
 app.use(express.json());
-app.use(cookieParser());
 app.use("/api/user", userRouter);
 app.use("/api/chat", chatRouter);
 app.use("/api/message", messageRoute);

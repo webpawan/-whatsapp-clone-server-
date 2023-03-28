@@ -25,7 +25,7 @@ const userSchema = mongoose.Schema({
 
 userSchema.methods.genrateToken = async function () {
   try {
-    const token = jwt.sign({ id: this._id }, process.env.JWT_KEY);
+    const token = jwt.sign({ id: this._id }, process.env.JWT_KEY,{expiresIn:'5h'});
     this.tokens = this.tokens.concat({token:token})
     await this.save();
     return token;
